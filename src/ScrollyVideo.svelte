@@ -25,6 +25,10 @@
   // Allow a debug flag
   export let debug;
 
+  //Allow custom start height
+  export let startheight = 0;
+  export let endheight = 0;
+
   // Stop the animation when we are within 0.1 seconds of the target.
   // Close enough for floating point video shenanigans
   const frameThreshold = 0.1;
@@ -177,9 +181,24 @@
   // Used for internally setting the scroll percentage based on built-in listeners
   // TODO make this configurable
   const updateScrollPercentage = () => {
-    // eslint-disable-next-line no-undef
-    const bodyHeight = document.body.offsetHeight;
-    setCurrentTimePercent(scrollY / (bodyHeight - innerHeight));
+    const start = parseFloat(startheight);
+    const end = parseFloat(endheight);
+    if (debug) {
+      console.log(window.innerHeight, innerHeight);
+      //internal innerHeight is sometimes very wrong, not sure why
+      console.log("start: ", start, "end: ", end, "scrollY: ", scrollY);
+    }
+
+    if (scrollY + window.innerHeight > start) {
+      const percent =
+        ((scrollY - start + window.innerHeight) /
+          (end - start + window.innerHeight)) *
+        2;
+      if (debug) console.log("percent: ", percent);
+      if (percent <= 1 && percent >= 0) {
+        setCurrentTimePercent(percent);
+      }
+    }
   };
 </script>
 
