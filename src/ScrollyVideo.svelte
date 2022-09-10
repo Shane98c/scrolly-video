@@ -92,6 +92,8 @@
           context.drawImage(currFrame, 0, 0, currFrame.width, currFrame.height);
         }
       }, 10);
+    }).catch((e) => {
+      if (debug) console.log(e)
     });
   }
 
@@ -212,6 +214,8 @@
 <style>
   video {
     display: block;
+    position: sticky;
+    object-fit: cover;
   }
 
   .cover {
@@ -219,10 +223,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-width: 101%;
-    min-height: 101%;
+    min-width: 100%;
+    min-height: 100%;
     width: auto;
-    height: auto;
+    height: 100vh;
   }
 </style>
 
@@ -241,6 +245,7 @@
     {preload}
     autobuffer
     playsinline
+    webkit-playsinline
     class:cover
     {...$$props}
     bind:this={video}
