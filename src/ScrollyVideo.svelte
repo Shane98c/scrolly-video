@@ -33,6 +33,13 @@
   // Close enough for floating point video shenanigans
   const frameThreshold = 0.1;
 
+  const ua = window.navigator.userAgent;
+  const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+  const webkit = !!ua.match(/WebKit/i);
+  const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+
+  let preload = iOSSafari ? "metadata" : "auto";
+
   // variable to hold the DOM video element
   let video;
 
@@ -228,9 +235,10 @@
   -->
   <canvas class:cover bind:this={canvas} />
 {:else}
+  <!-- preload="metadata" is super important for safari ios! -->
   <video
     tabindex="0"
-    preload="auto"
+    {preload}
     autobuffer
     playsinline
     class:cover
